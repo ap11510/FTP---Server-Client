@@ -10,6 +10,9 @@ public class myServer
 {
     private int s_portNo;
     private ServerSocket s_socket;
+    private Socket c_clientSocket;
+    private Worker worker;
+
 
     public myServer(int port)
     {
@@ -24,18 +27,72 @@ public class myServer
         }
     }
 
-    public void start() throws IOException
+    public void start()
     {
         boolean running = true;
 
-        while(running)
+        try
+        {
+            c_clientSocket = s_socket.accept();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(c_clientSocket.getInputStream()));
+            PrintWriter    writer = new PrintWriter(c_clientSocket.getOutputStream(), true);
+
+            worker = new Worker(c_clientSocket);
+
+            while(running)
+            {
+                String inputLine;
+
+                while((inputLine = reader.readLine()) != null)
+                {
+                    String[] arguments = inputLine.split(" ");
+                    System.out.println(arguments[0]);
+
+                    if(arguments != null)
+                    {
+                        this.handleInput(arguments);
+                    }
+
+                }
+
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void handleInput(String[] arguments) throws Exception
+    {
+        switch (arguments[0])
+        {
+            case "pwd" : worker.printWorkingDirectory();
+                break;
+            case "ls"  : worker.listSegments();
+                break;
+            case "cd"  : worker.changeDirectory(arguments);
+                break;
+            default: worker.printUnknownCmd();
+        }
+    }
+
+    public static void main(String[] args) throws IOException
+    {
+        int portNumber = Integer.parseInt(args[0]);
+
+        myServer s_server = new myServer(portNumber);
+
+        s_server.start();
+    }
+}
+
+/*
+while(running)
         {
             try
-            (
-                Socket c_clientSocket = s_socket.accept();
-                PrintWriter    writer = new PrintWriter(c_clientSocket.getOutputStream(), true);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(c_clientSocket.getInputStream()));
-            )
             {
                 String inputLine;
 
@@ -49,9 +106,6 @@ public class myServer
                     {
                         //System.out.println("Initializing job class");
                         writer.println("Initializing job class");
-
-
-
                     }
                     else if (inputLine.equals("goodbye"))
                     {
@@ -72,14 +126,4 @@ public class myServer
                                     + s_portNo + " or listening for connection");
             }
         }
-    }
-
-    public static void main(String[] args) throws IOException
-    {
-        int    portNumber = Integer.parseInt(args[0]);
-
-        myServer s_server = new myServer(portNumber);
-
-        s_server.start();
-    }
-}
+ */
