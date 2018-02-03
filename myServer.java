@@ -46,9 +46,24 @@ public class myServer
                 while((inputLine = reader.readLine()) != null)
                 {
                     String[] arguments = inputLine.split(" ");
+
+                    String[] parsedArgs = new String[2];
                     System.out.println(arguments[0]);
 
-                    if(arguments != null)
+                    if(arguments.length >= 3)
+                    {
+                        String command  = inputLine.substring(0, inputLine.indexOf(" "));
+                        String argument = inputLine.substring(inputLine.indexOf(" ") + 1, inputLine.length());
+                        parsedArgs[0] = command;
+                        parsedArgs[1] = argument;
+
+                        if(parsedArgs != null)
+                        {
+                            this.handleInput(parsedArgs);
+                        }
+
+                    }
+                    else if(arguments != null)
                     {
                         this.handleInput(arguments);
                     }
@@ -75,6 +90,15 @@ public class myServer
                 break;
             case "cd"  : worker.changeDirectory(arguments);
                 break;
+            case "quit": worker.quit();
+                break;
+            case "delete": worker.deleteFile(arguments);
+                break;
+            case "mkdir": worker.makeDirectory(arguments);
+                break;
+            case "put": worker.put(arguments);
+                    break;
+            case "get": worker.get(arguments);
             default: worker.printUnknownCmd();
         }
     }
@@ -84,8 +108,11 @@ public class myServer
         int portNumber = Integer.parseInt(args[0]);
 
         myServer s_server = new myServer(portNumber);
+        while(true)
+        {
+            s_server.start();
+        }
 
-        s_server.start();
     }
 }
 

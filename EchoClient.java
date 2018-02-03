@@ -16,8 +16,8 @@ public class EchoClient {
 
         try
         {
-            Socket echoSocket = new Socket(hostName, portNumber);
-            PrintWriter out   = new PrintWriter(echoSocket.getOutputStream(), true);
+            Socket echoSocket    = new Socket(hostName, portNumber);
+            PrintWriter out      = new PrintWriter(echoSocket.getOutputStream(), true);
             BufferedReader in    = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 

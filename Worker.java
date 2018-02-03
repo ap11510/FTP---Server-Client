@@ -4,31 +4,41 @@ import java.net.Socket;
 /**
  * Created by Adrian on 2/1/18.
  */
+//Worker Class
+//Handles all the logic of constructing output to send back to user
+
 public class Worker {
 
     private Socket clientSocket;
     private PrintWriter writer;
-    private BufferedReader reader;
     File directory;
 
     Worker(Socket c_socket) throws Exception
     {
         clientSocket = c_socket;
-        writer = new PrintWriter(clientSocket.getOutputStream(), true);
-        reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        directory = new File(".");
+        writer       = new PrintWriter(clientSocket.getOutputStream(), true);
+        directory    = new File(".");
+    }
+
+    public void quit() throws IOException
+    {
+        writer.flush();
+        writer.close();
+        clientSocket.close();
+        System.out.println("Server Now Ready To Accept New Connection");
     }
 
 
     public void listSegments()
     {
-        File[] fileList = directory.listFiles();
+        File[] fileList           = directory.listFiles();
 
         StringBuffer fileNameList = new StringBuffer();
 
         for(File file: fileList)
         {
             StringBuffer msg = new StringBuffer();
+
             if(file.isFile())
             {
                 fileNameList.append("File:");
@@ -56,6 +66,36 @@ public class Worker {
     public void printUnknownCmd()
     {
         writer.println("Unknown Command" + "\n");
+    }
+
+    public void deleteFile(String[] arguments) throws IOException
+    {
+        if(arguments.length != 2)
+        {
+            writer.println("Improper Usage: Command is delete <remote_file_name>" + "\n");
+        }
+        else
+        {
+            StringBuffer constructorString = new StringBuffer(directory.getCanonicalPath()).append("/").append(arguments[1]);
+            File fileToDelete = new File(constructorString.toString());
+
+            if(!fileToDelete.isDirectory())
+            {
+                if(fileToDelete.exists())
+                {
+                    fileToDelete.delete();
+                    writer.println("File Deleted" + "\n");
+                }
+                else
+                {
+                    writer.println("File does not exist" + "\n");
+                }
+            }
+            else
+            {
+                writer.println("Cannot delete a directory" + "\n");
+            }
+        }
     }
 
     public void changeDirectory(String[] arguments) throws IOException
@@ -87,7 +127,7 @@ public class Worker {
             this.directory = new File(currentDirectory.toString());
             printWorkingDirectory();
         }
-        else if(arguments[1].substring(1,1).equals("/"))
+        else if(arguments[1].startsWith("/"))
         {
             File newFile = new File(arguments[1]);
             if (newFile.exists() && newFile.isDirectory()) {
@@ -106,9 +146,10 @@ public class Worker {
             newDirectory.append("/");
             newDirectory.append(arguments[1]);
 
-            File newFile = new File(arguments[1]);
+            File newFile = new File(newDirectory.toString());
             //if (newFile.exists() && newFile.isDirectory()) {
-            if(newFile.isDirectory()){
+            if(newFile.isDirectory())
+            {
                 this.directory = newFile;
                 printWorkingDirectory();
             }
@@ -117,9 +158,31 @@ public class Worker {
                 writer.println("Directory doesn't exist" + "\n");
             }
         }
+    }
 
+    public void makeDirectory(String[] arguments) throws IOException
+    {
+        StringBuffer constructorString = new StringBuffer(directory.getCanonicalPath()).append("/").append(arguments[1]);
+        File directoryToMake = new File(constructorString.toString());
 
+        if(directoryToMake.isDirectory())
+        {
+            writer.println("Directory already exists" + "\n");
+        }
+        else
+        {
+            directoryToMake.mkdir();
+            writer.println("Directory Made" + "\n");
+        }
+    }
 
+    public void put(String[] arguments)
+    {
+
+    }
+
+    public void get(String[] arguments)
+    {
 
     }
 
