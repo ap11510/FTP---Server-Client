@@ -25,17 +25,13 @@ public class EchoClient {
             while ((userInput = stdIn.readLine()) != null)
             {
                 out.println(userInput);
-
                 String outPutString = null;
 
 
 
-                while(true)
+                while(!userInput.equals("quit"))
                 {
-
-                    outPutString = in.readLine();
-
-
+                   outPutString = in.readLine();
                    if(!outPutString.equals(""))
                     {
                         System.out.println(outPutString);
@@ -46,9 +42,15 @@ public class EchoClient {
                     }
 
                 }
+                if (userInput.equals("quit")) {               	
+                	echoSocket.close();
+                	System.exit(0);
+                }
+                
+               
 
             }
-            echoSocket.close();
+            
         } catch (UnknownHostException e)
         {
             System.err.println("Don't know about host " + hostName);

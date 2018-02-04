@@ -45,7 +45,7 @@ public class myServer
             {
                 String inputLine;
 
-                while((inputLine = reader.readLine().trim()) != null)
+                while(((inputLine = reader.readLine().trim()) != null))
                 {
                 	
                     String[] arguments = inputLine.split(" ");
@@ -78,7 +78,10 @@ public class myServer
         }
         catch (Exception e)
         {
-            System.out.println("Nope: :"+": : "+e.getMessage());
+        	if(e.getMessage().equals("socket closed"));
+        	else
+            System.out.println(e.getMessage());
+            
         }
     }
 
