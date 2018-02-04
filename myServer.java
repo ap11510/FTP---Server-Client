@@ -37,20 +37,19 @@ public class myServer
         {
             c_clientSocket = s_socket.accept();
             BufferedReader reader = new BufferedReader(new InputStreamReader(c_clientSocket.getInputStream()));
-            PrintWriter    writer = new PrintWriter(c_clientSocket.getOutputStream(), true);
+            //PrintWriter    writer = new PrintWriter(c_clientSocket.getOutputStream(), true);
 
             worker = new Worker(c_clientSocket);
-
             while(running)
             {
                 String inputLine;
-
+                
                 while(((inputLine = reader.readLine().trim()) != null))
                 {
                 	
                     String[] arguments = inputLine.split(" ");
                     String[] parsedArgs = new String[2];
-                	System.out.println(arguments[0]);
+                	//System.out.println(arguments[0]);
                     if(arguments.length >= 3)
                     {
                     	
@@ -95,7 +94,7 @@ public class myServer
                 break;
             case "cd"  : worker.changeDirectory(arguments);
                 break;
-            case "quit": worker.quit();
+            case "quit": worker.quit();			
                 break;
             case "delete": worker.deleteFile(arguments);
                 break;

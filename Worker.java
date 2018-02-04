@@ -12,7 +12,7 @@ public class Worker {
     private Socket clientSocket;
     private PrintWriter writer;
     private FileInputStream fileInputStream;//file writer for get and push
-    private BufferedInputStream bufferedInputStream;
+    private DataOutputStream dataOutputStream;
     File directory;
 
     Worker(Socket c_socket) throws Exception
@@ -29,7 +29,10 @@ public class Worker {
         //clientSocket.close();
         System.out.println("Server Now Ready To Accept New Connection");
     }
-
+    public void msg(String str)
+    {
+    	writer.println(str);
+    }
 
     public void listSegments()
     {
@@ -56,7 +59,7 @@ public class Worker {
 
         }
 
-        System.out.print(fileNameList);
+        //System.out.print(fileNameList);
         writer.println(fileNameList);
     }
 
