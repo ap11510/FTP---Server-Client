@@ -43,15 +43,15 @@ public class myServer
             {
                 String inputLine;
 
-                while((inputLine = reader.readLine()) != null)
+                while((inputLine = reader.readLine().trim()) != null)
                 {
+                	
                     String[] arguments = inputLine.split(" ");
-
                     String[] parsedArgs = new String[2];
-                    System.out.println(arguments[0]);
-
+                	System.out.println(arguments[0]);
                     if(arguments.length >= 3)
                     {
+                    	
                         String command  = inputLine.substring(0, inputLine.indexOf(" "));
                         String argument = inputLine.substring(inputLine.indexOf(" ") + 1, inputLine.length());
                         parsedArgs[0] = command;
@@ -76,7 +76,7 @@ public class myServer
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("Nope: :"+": : "+e.getMessage());
         }
     }
 

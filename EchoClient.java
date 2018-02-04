@@ -36,7 +36,7 @@ public class EchoClient {
                     outPutString = in.readLine();
 
 
-                    if(!outPutString.equals(""))
+                   if(!outPutString.equals(""))
                     {
                         System.out.println(outPutString);
                     }
@@ -48,6 +48,7 @@ public class EchoClient {
                 }
 
             }
+            echoSocket.close();
         } catch (UnknownHostException e)
         {
             System.err.println("Don't know about host " + hostName);

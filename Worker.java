@@ -11,6 +11,9 @@ public class Worker {
 
     private Socket clientSocket;
     private PrintWriter writer;
+    private FileInputStream fileInputStream;//file writer for get and push
+    private BufferedInputStream bufferedInputStream;
+    
     File directory;
 
     Worker(Socket c_socket) throws Exception
@@ -19,7 +22,7 @@ public class Worker {
         writer       = new PrintWriter(clientSocket.getOutputStream(), true);
         directory    = new File(".");
     }
-
+    
     public void quit() throws IOException
     {
         writer.flush();
@@ -37,7 +40,7 @@ public class Worker {
 
         for(File file: fileList)
         {
-            StringBuffer msg = new StringBuffer();
+            //StringBuffer msg = new StringBuffer();
 
             if(file.isFile())
             {
@@ -63,7 +66,7 @@ public class Worker {
         writer.println(directory.getCanonicalPath() + "\n");
     }
 
-    public void printUnknownCmd()
+    public void printUnknownCmd() throws IOException
     {
         writer.println("Unknown Command" + "\n");
     }
@@ -175,20 +178,30 @@ public class Worker {
             writer.println("Directory Made" + "\n");
         }
     }
-
+    public void get(String[] arguments) throws IOException
+    {
+    	File file 		 = new File(arguments.toString());
+    	byte []bytearray = new byte[file.toString().length()];
+    	try {
+			fileInputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			System.out.print("File not found.");
+		}
+    	bufferedInputStream = new BufferedInputStream(fileInputStream);
+		bufferedInputStream.read(bytearray,0,bytearray.length);
+    	OutputStream outputStream = clientSocket.getOutputStream();
+    	System.out.print("Sending file.");
+    	outputStream.write(bytearray,0,bytearray.length);
+    	outputStream.flush();
+    	System.out.println("Transfer complete.");
+    	if (bufferedInputStream != null) bufferedInputStream.close();
+        if (outputStream != null) outputStream.close();
+    }
     public void put(String[] arguments)
     {
 
     }
 
-    public void get(String[] arguments)
-    {
-
-    }
-
-    public static void main(String[] args) throws IOException
-    {
-
-    }
+   
 }
 
