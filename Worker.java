@@ -11,8 +11,9 @@ public class Worker {
 
     private Socket clientSocket;
     private PrintWriter writer;
-    private FileInputStream fileInputStream;//file writer for get and push
-    private DataOutputStream dataOutputStream;
+    InputStream is;
+    FileOutputStream fos;
+    BufferedOutputStream bos;
     File directory;
 
     Worker(Socket c_socket) throws Exception
@@ -182,11 +183,30 @@ public class Worker {
     }
     public void get(String[] arguments) throws IOException
     {
-    	
-    }
-    public void put(String[] arguments)
-    {
+    	msg("(1337)pushing");
+    	msg(arguments[1]);
+    	File myFile = new File(arguments[1]);
+    	byte[] mybytearray = new byte[(int) myFile.length()];
+    	BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
 
+          bis.read(mybytearray, 0, mybytearray.length);
+          OutputStream os = clientSocket.getOutputStream();
+          os.write(mybytearray, 0, mybytearray.length);
+          os.flush();
+    }
+    public void put(String[] arguments) throws IOException
+    {
+    	msg("(1337)recieving");
+    	msg(arguments[1]);
+    	byte[] data = new byte[1024];
+    	is = clientSocket.getInputStream();
+	    fos = new FileOutputStream(arguments[1]);
+	    bos = new BufferedOutputStream(fos);
+	    int bytesRead = is.read(data, 0, data.length);
+	    bos.write(data, 0, bytesRead);
+	    bos.close();
+	    System.out.println("file saved on server");
+    	
     }
 
    

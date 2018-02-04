@@ -12,8 +12,6 @@ public class myServer
     private ServerSocket s_socket;
     private Socket c_clientSocket;
     private Worker worker;
-    private FileInputStream fileInputStream;//file writer for get and push
-    private BufferedInputStream bufferedInputStream;
 
 
     public myServer(int port)
@@ -102,25 +100,7 @@ public class myServer
                 break;
             case "put": worker.put(arguments);
                     break;
-            case "get":
-            	worker.get(arguments);
-            	File file 		 = new File(arguments[1]);
-            	byte []bytearray = new byte[file.toString().length()];
-            	try {
-        			fileInputStream = new FileInputStream(file);
-        		} catch (FileNotFoundException e) {
-        			System.out.print("File not found.");
-        		}
-            	bufferedInputStream = new BufferedInputStream(fileInputStream);
-        		bufferedInputStream.read(bytearray,0,bytearray.length);
-            	OutputStream outputStream = c_clientSocket.getOutputStream();
-            	System.out.print("Sending file.");
-            	outputStream.write(bytearray,0,bytearray.length);
-            	outputStream.flush();
-            	System.out.println("Transfer complete.");
-            	if (bufferedInputStream != null) bufferedInputStream.close();
-                if (outputStream != null) outputStream.close();
-            
+            case "get": worker.get(arguments);
             default: worker.printUnknownCmd();
         }
     }
