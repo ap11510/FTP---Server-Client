@@ -25,22 +25,26 @@ public class EchoClient {
             while ((userInput = stdIn.readLine()) != null)
             {
                 out.println(userInput);
+                
+
                 String outPutString = null;
 
 
-
+                if(!in.ready()) System.out.println("The server is currently in session with another user,"
+						+ "\nyour commands will be queued and will be"
+						+ "\nprocessed as soon as the server is available.");
                 while(!userInput.equals("quit"))
                 {
-                   outPutString = in.readLine();
-                   if(!outPutString.equals(""))
-                    {
-                        System.out.println(outPutString);
-                    }
-                    else
-                    {
-                        break;
-                    }
-
+	                   outPutString = in.readLine();
+	                   if(!outPutString.equals(""))
+	                    {
+	                        System.out.println(outPutString);
+	                    }
+	                    else
+	                    {
+	                        break;
+	                    }
+                	} 
                 }
                 if (userInput.equals("quit")) {               	
                 	echoSocket.close();
@@ -49,7 +53,7 @@ public class EchoClient {
                 
                
 
-            }
+            
             
         } catch (UnknownHostException e)
         {
