@@ -6,7 +6,7 @@ import java.net.*;
 import java.io.*;
 
 
-public class myServer
+public class myftpserver
 {
     private int s_portNo;
     private ServerSocket s_socket;
@@ -14,7 +14,7 @@ public class myServer
     private Worker worker;
 
 
-    public myServer(int port)
+    public myftpserver(int port)
     {
         s_portNo = port;
         try
@@ -99,10 +99,6 @@ public class myServer
                 break;
             case "mkdir": worker.makeDirectory(arguments);
                 break;
-            case "put": worker.put(arguments);
-                    break;
-            case "get": worker.get(arguments);
-            		break;
             default: worker.printUnknownCmd();
             		break;
         }
@@ -112,7 +108,7 @@ public class myServer
     {
         int portNumber = Integer.parseInt(args[0]);
 
-        myServer s_server = new myServer(portNumber);
+        myftpserver s_server = new myftpserver(portNumber);
         while(true)
         {
             s_server.start();

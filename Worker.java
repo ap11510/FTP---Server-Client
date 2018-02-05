@@ -1,5 +1,8 @@
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 /**
  * Created by Adrian on 2/1/18.
@@ -180,31 +183,9 @@ public class Worker {
     }
     public void get(String[] arguments) throws IOException
     {
-    	msg("(1337)pushing");
-    	msg(arguments[1]);
-    	FileInputStream fis;
-        BufferedInputStream bis;
-        BufferedOutputStream out;
-        byte[] buffer = new byte[8192];
-        try {
-            fis = new FileInputStream(arguments[1]);
-            bis = new BufferedInputStream(fis);
-            out = new BufferedOutputStream(clientSocket.getOutputStream());
-            int count = 0;
-            while ((count = bis.read(buffer)) > 0) {
-                out.write(buffer, 0, count);
-                
 
-            }
-            out.close();
-            fis.close();
-            bis.close();
-            System.out.println("Transfer complete");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
     }
+        
     public void put(String[] arguments) throws IOException
     {
     	

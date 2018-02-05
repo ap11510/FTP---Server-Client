@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.net.Socket;
 
-public class EchoClient {
+public class myftp {
 	
     public static void main(String[] args) {
     	
@@ -30,33 +30,8 @@ public class EchoClient {
                 String outPutString = null;
                 while(!userInput.equals("quit"))
                 { 
-                	outPutString = in.readLine();
-	                if(outPutString.equals("(1337)pushing")){
-	                	String filename = in.readLine();
-	                	InputStream is;
-	                    FileOutputStream fos;
-	                    BufferedOutputStream bos;
-	                    int bufferSize;
-	                    is = echoSocket.getInputStream();
-	                    bufferSize = echoSocket.getReceiveBufferSize();
-	                    System.out.println("Buffer size: " + bufferSize);
-	                    fos = new FileOutputStream(filename);
-	                    bos = new BufferedOutputStream(fos);
-	                    byte[] bytes = new byte[bufferSize];
-	                    int count=0;
-	                    while ((count = is.read(bytes)) >= 0) {
-	                        bos.write(bytes, 0, count);
-	                    }
-	                    bos.close();
-	                    is.close();
-	                    System.out.println("transfered");
-	                   }
-	                else if(outPutString.equals("(1337)recieving"))
-	                {
-	                	
-	                }
-	                
-	                   else if(!outPutString.equals(""))
+                		outPutString = in.readLine();
+                		if(!outPutString.equals(""))
 	                    {
 	                        System.out.println(outPutString);
 	                    }
