@@ -188,6 +188,7 @@ public class Worker {
     	DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
     	StringBuffer constructorString = new StringBuffer(directory.getCanonicalPath()).append("/").append(arguments[1]);
         File filePath = new File(constructorString.toString());
+        writer.println(filePath.length());
 		FileInputStream fis = new FileInputStream(filePath);
 		byte[] buffer = new byte[4096];
 		
@@ -195,7 +196,8 @@ public class Worker {
 			dos.write(buffer);
 		}
 		dos.flush();
-		fis.close(); 
+		fis.close();
+		System.out.println("Transfer complete");
     }
     public void put(String[] arguments) throws IOException
     {
