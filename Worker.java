@@ -190,9 +190,10 @@ public class Worker {
             fis = new FileInputStream(arguments[1]);
             bis = new BufferedInputStream(fis);
             out = new BufferedOutputStream(clientSocket.getOutputStream());
-            int count;
+            int count = 0;
             while ((count = bis.read(buffer)) > 0) {
                 out.write(buffer, 0, count);
+                
 
             }
             out.close();

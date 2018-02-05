@@ -43,7 +43,7 @@ public class EchoClient {
 	                    fos = new FileOutputStream(filename);
 	                    bos = new BufferedOutputStream(fos);
 	                    byte[] bytes = new byte[bufferSize];
-	                    int count;
+	                    int count=0;
 	                    while ((count = is.read(bytes)) >= 0) {
 	                        bos.write(bytes, 0, count);
 	                    }
