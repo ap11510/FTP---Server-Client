@@ -186,7 +186,9 @@ public class Worker {
     	msg("(1337)pushing");
     	msg(arguments[1]);
     	DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
-		FileInputStream fis = new FileInputStream(arguments[1]);
+    	StringBuffer constructorString = new StringBuffer(directory.getCanonicalPath()).append("/").append(arguments[1]);
+        File filePath = new File(constructorString.toString());
+		FileInputStream fis = new FileInputStream(filePath);
 		byte[] buffer = new byte[4096];
 		
 		while (fis.read(buffer) > 0) {

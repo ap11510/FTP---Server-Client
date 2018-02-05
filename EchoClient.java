@@ -46,9 +46,8 @@ public class EchoClient {
 	            			System.out.println("read " + totalRead + " bytes.");
 	            			fos.write(buffer, 0, read);
 	            		}
-	            		
+	            		fos.flush();
 	            		fos.close();
-	            		dis.close();
 	            	    System.out.println("file saved");
 	                   }
 	                else if(outPutString.equals("(1337)recieving"))
