@@ -5,6 +5,7 @@ import java.net.Socket;
 public class EchoClient {
 	
     public static void main(String[] args) {
+    	
         if (args.length != 2)
         {
             System.err.println("Usage: java EchoClient <host name> <port number>");
@@ -32,23 +33,23 @@ public class EchoClient {
                 	outPutString = in.readLine();
 	                if(outPutString.equals("(1337)pushing")){
 	                	String filename = in.readLine();
-	                	DataInputStream dis = new DataInputStream(echoSocket.getInputStream());
-	            		FileOutputStream fos = new FileOutputStream(filename);
-	            		byte[] buffer = new byte[4096];
-	            		
-	            		int filesize = 15123; // Send file size in separate msg
-	            		int read = 0;
-	            		int totalRead = 0;
-	            		int remaining = filesize;
-	            		while((read = dis.read(buffer, 0, Math.min(buffer.length, remaining))) > 0) {
-	            			totalRead += read;
-	            			remaining -= read;
-	            			System.out.println("read " + totalRead + " bytes.");
-	            			fos.write(buffer, 0, read);
-	            		}
-	            		fos.flush();
-	            		fos.close();
-	            	    System.out.println("file saved");
+	                	InputStream is;
+	                    FileOutputStream fos;
+	                    BufferedOutputStream bos;
+	                    int bufferSize;
+	                    is = echoSocket.getInputStream();
+	                    bufferSize = echoSocket.getReceiveBufferSize();
+	                    System.out.println("Buffer size: " + bufferSize);
+	                    fos = new FileOutputStream(filename);
+	                    bos = new BufferedOutputStream(fos);
+	                    byte[] bytes = new byte[bufferSize];
+	                    int count;
+	                    while ((count = is.read(bytes)) >= 0) {
+	                        bos.write(bytes, 0, count);
+	                    }
+	                    bos.close();
+	                    is.close();
+	                    System.out.println("transfered");
 	                   }
 	                else if(outPutString.equals("(1337)recieving"))
 	                {

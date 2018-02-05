@@ -11,9 +11,6 @@ public class Worker {
 
     private Socket clientSocket;
     private PrintWriter writer;
-    InputStream is;
-    FileOutputStream fos;
-    BufferedOutputStream bos;
     File directory;
 
     Worker(Socket c_socket) throws Exception
@@ -185,19 +182,27 @@ public class Worker {
     {
     	msg("(1337)pushing");
     	msg(arguments[1]);
-    	DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
-    	StringBuffer constructorString = new StringBuffer(directory.getCanonicalPath()).append("/").append(arguments[1]);
-        File filePath = new File(constructorString.toString());
-        writer.println(filePath.length());
-		FileInputStream fis = new FileInputStream(filePath);
-		byte[] buffer = new byte[4096];
+    	FileInputStream fis;
+        BufferedInputStream bis;
+        BufferedOutputStream out;
+        byte[] buffer = new byte[8192];
+        try {
+            fis = new FileInputStream(arguments[1]);
+            bis = new BufferedInputStream(fis);
+            out = new BufferedOutputStream(clientSocket.getOutputStream());
+            int count;
+            while ((count = bis.read(buffer)) > 0) {
+                out.write(buffer, 0, count);
+
+            }
+            out.close();
+            fis.close();
+            bis.close();
+            System.out.println("Transfer complete");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		
-		while (fis.read(buffer) > 0) {
-			dos.write(buffer);
-		}
-		dos.flush();
-		fis.close();
-		System.out.println("Transfer complete");
     }
     public void put(String[] arguments) throws IOException
     {
