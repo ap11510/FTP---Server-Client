@@ -102,7 +102,9 @@ public class myServer
             case "put": worker.put(arguments);
                     break;
             case "get": worker.get(arguments);
+            		break;
             default: worker.printUnknownCmd();
+            		break;
         }
     }
 
