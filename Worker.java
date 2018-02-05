@@ -185,27 +185,19 @@ public class Worker {
     {
     	msg("(1337)pushing");
     	msg(arguments[1]);
-    	File myFile = new File(arguments[1]);
-    	byte[] mybytearray = new byte[(int) myFile.length()];
-    	BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
-
-          bis.read(mybytearray, 0, mybytearray.length);
-          OutputStream os = clientSocket.getOutputStream();
-          os.write(mybytearray, 0, mybytearray.length);
-          os.flush();
+    	DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+		FileInputStream fis = new FileInputStream(arguments[1]);
+		byte[] buffer = new byte[4096];
+		
+		while (fis.read(buffer) > 0) {
+			dos.write(buffer);
+		}
+		dos.flush();
+		fis.close(); 
     }
     public void put(String[] arguments) throws IOException
     {
-    	msg("(1337)recieving");
-    	msg(arguments[1]);
-    	byte[] data = new byte[1024];
-    	is = clientSocket.getInputStream();
-	    fos = new FileOutputStream(arguments[1]);
-	    bos = new BufferedOutputStream(fos);
-	    int bytesRead = is.read(data, 0, data.length);
-	    bos.write(data, 0, bytesRead);
-	    bos.close();
-	    System.out.println("file saved on server");
+    	
     	
     }
 

@@ -84,6 +84,7 @@ public class myServer
 
     public void handleInput(String[] arguments) throws Exception
     {
+    	System.out.println(arguments[0]);
         switch (arguments[0])
         {
             case "pwd" : worker.printWorkingDirectory();
@@ -117,42 +118,3 @@ public class myServer
 
     }
 }
-
-/*
-while(running)
-        {
-            try
-            {
-                String inputLine;
-
-                while((inputLine = reader.readLine()) != null)
-                {
-                    System.out.println(inputLine);
-
-                    inputLine.toLowerCase();
-
-                    if(inputLine.equals("do a job"))
-                    {
-                        //System.out.println("Initializing job class");
-                        writer.println("Initializing job class");
-                    }
-                    else if (inputLine.equals("goodbye"))
-                    {
-                        writer.println("Server Will now exit , thank you!");
-                        System.out.println("Server now exiting");
-                        System.exit(0);
-                    }
-
-                    writer.println("Server got this line: " + inputLine);
-                }
-
-
-            }
-            catch (IOException e)
-            {
-                System.out.println("Error connecting a client in start(): " + e.getMessage());
-                System.out.println("Exception caught when trying to listen on port "
-                                    + s_portNo + " or listening for connection");
-            }
-        }
- */
